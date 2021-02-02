@@ -1,0 +1,40 @@
+name: 'PR Size Checker'
+description: 'Check PR total lines changed'
+inputs:
+  max_lines_changed:  # id of input
+    description: 'Maximum number of lines changed allowed'
+    required: true
+    default: '200'
+outputs:
+  total_lines_changed:
+    description: 'Total lines changed in this PR'
+    value: ${{ steps.get_total_lines_changed.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        additions=${{ github.event.pull_request.additions }}
+        echo "additions=${additions}" >> $GITHUB_ENV
+        deletions=${{ github.event.pull_request.deletions }}
+        echo "deletions=${deletions}" >> $GITHUB_ENV
+        echo "Additions: "
+        echo $additions
+        echo ""
+        echo "Deletions: "
+        echo $deletions
+      shell: bash
+    - id: get_total_lines_changed
+      run: |
+        size=$(($additions + $deletions))
+        echo "size=${size}" >> $GITHUB_ENV
+        echo "Total lines changed: "
+        echo $size
+      shell: bash
+    - run: |
+        if [[ $size -gt ${{ inputs.max_lines_changed }} ]]
+        then
+          echo "Warning - total lines changed is greater than " ${{ inputs.max_lines_changed }}.
+          echo "Please consider breaking this PR down."
+          exit 1
+        fi
+      shell: bash
