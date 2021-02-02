@@ -19,7 +19,6 @@ runs:
         echo "deletions=${deletions}" >> $GITHUB_ENV
         echo "Additions: "
         echo $additions
-        echo ""
         echo "Deletions: "
         echo $deletions
       shell: bash
@@ -27,13 +26,14 @@ runs:
       run: |
         size=$(($additions + $deletions))
         echo "size=${size}" >> $GITHUB_ENV
+        echo ""
         echo "Total lines changed: "
         echo $size
       shell: bash
     - run: |
         if [[ $size -gt ${{ inputs.max_lines_changed }} ]]
         then
-          echo "Warning - total lines changed is greater than " ${{ inputs.max_lines_changed }}.
+          echo "Warning - total lines changed is greater than" ${{ inputs.max_lines_changed }}.
           echo "Please consider breaking this PR down."
           exit 1
         fi
