@@ -14,7 +14,13 @@ runs:
   steps:
     - id: get_total_lines_changed
       run: |
-        size=$(./lines_from_master.sh)
+        size=$(git diff --stat master \
+        | grep -v .lock \
+        | awk -F"|" '{ print $2 }' \
+        | awk '{ print $1 }' \
+        | sed '/^$/d' \
+        | paste -sd+ - \
+        | bc)
         echo "Total lines changed: "
         echo $size
       shell: bash
