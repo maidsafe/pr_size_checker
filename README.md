@@ -7,6 +7,9 @@
 
 A GitHub Action which checks the number of additions and deletions made in each submitted PR, adding them together to come up with a `total lines changed` value, then checking whether this value exceeds the default or set `max_lines_changed` value. If it does exceed then the CI job will exit with code 1, i.e. fail.
 
+The lines changed calculation ignores lock files, eg `Cargo.lock` or `yarn.lock`.
+
+
 Calculation:
 ```
 Total lines changed = lines added + lines deleted
