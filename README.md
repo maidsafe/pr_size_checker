@@ -12,6 +12,8 @@ Calculation:
 Total lines changed = lines added + lines deleted
 ```
 
+Note that as of v2 this action will exclude any .lock files from the above count. If you want to include *.lock files in your count you should use v1.1.
+
 ## Inputs
 
 | Name                | Description                                                                                                           | Required | Default |
@@ -34,7 +36,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: maidsafe/pr_size_checker@v1.1
+      - uses: maidsafe/pr_size_checker@v2
         with:
           max_lines_changed: 200
 ```
