@@ -8,7 +8,7 @@ inputs:
   target_branch:
     description: The branch to compare against
     required: true
-    default: master
+    default: main
 outputs:
   total_lines_changed:
     description: 'Total lines changed in this PR'
