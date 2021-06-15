@@ -5,6 +5,10 @@ inputs:
     description: 'Maximum number of lines changed allowed'
     required: true
     default: '200'
+  target_branch:
+    description: The branch to compare against
+    required: true
+    default: master
 outputs:
   total_lines_changed:
     description: 'Total lines changed in this PR'
@@ -14,7 +18,7 @@ runs:
   steps:
     - id: get_total_lines_changed
       run: |
-        size=$(git diff --stat origin/master \
+        size=$(git diff --stat origin/${{ inputs.target_branch }} \
         | grep -v .lock \
         | awk -F"|" '{ print $2 }' \
         | awk '{ print $1 }' \
