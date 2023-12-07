@@ -20,6 +20,7 @@ runs:
       run: |
         size=$(git diff --stat origin/${{ inputs.target_branch }} \
         | grep -v .lock \
+        | grep -v Bin \
         | awk -F"|" '{ print $2 }' \
         | awk '{ print $1 }' \
         | sed '/^$/d' \
